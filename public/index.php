@@ -3,6 +3,7 @@
     
     use App\Core\Router;
     use App\Controllers\IndexController;
+    use App\Controllers\CarritoController;
 
     session_start();
 
@@ -12,11 +13,27 @@
 
     $router = new Router();
     $router->add(array(
-        "name" => "home", // Nombre de la ruta
-        "path" => "/^\/$/", // Expresión regular con la que extraemos la ruta de la URL
-        "action" => [IndexController::class, "indexAction"], // Clase y metedo que se ejecuta cuando se busque esa ruta
-        "auth" => ["invitado", "usuario"]) // Perfiles de autenticación que pueden acceder
+        "name" => "home", 
+        "path" => "/^\/(pizzas|bebidas|postres)?$/",
+        "action" => [IndexController::class, "indexAction"], 
+        "auth" => ["invitado", "usuario"]) 
     );
+
+    // Router que devuelve la imagen espeficiada en la URL a la vista
+    $router->add(array(
+        "name" => "imagen",
+        "path" => "/^\/imagen\/(.+)$/",
+        "action" => [IndexController::class, "imagenAction"],
+        "auth" => ["invitado", "usuario"]
+    ));
+
+    $router->add(array(
+        "name" => "carrito",
+        "path" => "/^\/carrito(\/agregar)?$/",
+        "action" => [CarritoController::class, "CarritoAction"],
+        "auth" => ["invitado", "usuario"]) 
+    );
+
 
     $request = $_SERVER['REQUEST_URI']; // Recoje URL
     $route = $router->match($request); // Busca en todas las rutas hasta encontrar cual coincide con la URL
