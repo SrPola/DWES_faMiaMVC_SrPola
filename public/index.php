@@ -38,7 +38,7 @@
     $router->add(array(
         "name" => "carrito",
         "path" => "/^\/carrito(\/agregar)?$/",
-        "action" => [CarritoController::class, "CarritoAction"],
+        "action" => [CarritoController::class, "carritoAction"],
         "auth" => ["invitado", "usuario"]) 
     );
 
@@ -67,13 +67,27 @@
         "name" => "Tramitar pedido",
         "path" => "/^\/tramitar_pedido$/",
         "action" => [CarritoController::class, "tramitarPedidoAction"],
-        "auth" => ["usuario", "usuario"]) 
+        "auth" => ["invitado", "usuario"]) 
+    );
+
+    $router->add(array(
+        "name" => "Descargar tickets",
+        "path" => "/^\/tickets\/(.+).txt$/",
+        "action" => [IndexController::class, "ticketsAction"],
+        "auth" => ["invitado", "usuario"]) 
     );
 
     $router->add(array(
         "name" => "Gertor de comandas",
         "path" => "/^\/comandas$/",
         "action" => [ComandasController::class, "comandasAction"],
+        "auth" => ["usuario"]) 
+    );
+
+    $router->add(array(
+        "name" => "Realizar comandas",
+        "path" => "/^\/realizar_comanda\/(.+)_pendiente.txt$/",
+        "action" => [ComandasController::class, "realizarAction"],
         "auth" => ["usuario"]) 
     );
 
@@ -87,7 +101,7 @@
             $object = new $className;
             $object->$classMethod($request);
         } else {
-            exit(http_response_code(401));
+            header("Location: /login");
         }
     } else {
         exit(http_response_code(404));

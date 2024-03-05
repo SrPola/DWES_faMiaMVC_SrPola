@@ -26,7 +26,19 @@
             <h3>Gestor de comandas</h3>
             <?php
                 echo "<p>Bienvenido, usted está como ".$_SESSION["perfil"]."</p>";
-                echo "<a href='close_session'>Cerrar session</a>"
+                echo "<a href='close_session'>Cerrar session</a>";
+
+                echo "<table>";
+                echo "<tr><th>Comandas</th></tr>";
+                foreach ($data["comandas"] as $comanda) {
+                    echo "<tr><td>".$comanda."</td>";
+                    $partes_comanda = explode("_", $comanda);
+                    if (end($partes_comanda) == "pendiente.txt") {
+                        echo "<td><a href='/realizar_comanda/".$comanda."'>Realizar comanda</a></td>";    
+                    }
+                    
+                    echo "</tr>";
+                }
             ?>
         </main>
         <footer>

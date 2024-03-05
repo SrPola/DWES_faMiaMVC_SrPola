@@ -34,6 +34,17 @@
             }
         }
 
+        public function ticketsAction($request) {
+            $ticket = "../app/Config/tickets/".basename($request);
+
+            if (file_exists($ticket)){
+                header('Content-Type: file/txt');
+                readfile($ticket);
+            } else {
+                exit(http_response_code(404));
+            }
+        }
+
         public function closeSession() {
             session_destroy();
             // unset($_SESSION["perfil"]);

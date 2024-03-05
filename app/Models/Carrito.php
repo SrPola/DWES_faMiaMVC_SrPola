@@ -49,9 +49,42 @@
         }
 
         public function tramitarPedido() {
+            $total_pizzas = 0;
+
             // Si el carrito no está vacío, guarda el carrito en la base de datos
             if (isset($_SESSION["carrito"]) && !empty($_SESSION["carrito"])) {
+                // Genera el ticket de compra
+                $ticket = "ticket_".time().".txt";
+                $fichero_ticket = fopen("../app/Config/tickets/".$ticket, "w");
+                fwrite($fichero_ticket, "Ticket de compra\n");
+                fwrite($fichero_ticket, "----------------\n");
+                foreach ($_SESSION["carrito"]["productos"] as $producto) {
+                    fwrite($fichero_ticket, $producto["nombre"]." x".$producto["cantidad"]." ".$producto["precio_total"]."€\n");
+                }
+                fwrite($fichero_ticket, "----------------\n");
+                fwrite($fichero_ticket, "Total: ".$_SESSION["carrito"]["total_carrito"]."€\n");
+                fclose($fichero_ticket);
+                
 
+                // Genera la comanda pendiente
+                $comanda = "comanda_".pathinfo(str_replace("ticket_", "", $ticket), PATHINFO_FILENAME)."_pendiente.txt"; // Genera el nombre de la comanda pendiente a partir de la fecha del ticket
+                $fichero_comanda = fopen("../app/Config/comandas/".$comanda, "w");
+                fwrite($fichero_comanda, "Comanda\n");
+                fwrite($fichero_comanda, "----------------\n");
+                foreach ($_SESSION["carrito"]["productos"] as $producto) {
+                    if ($producto["tipo"] == "pizzas") {
+                        fwrite($fichero_comanda, $producto["nombre"]." x".$producto["cantidad"]." ".$producto["precio_total"]."€\n");
+                        $total_pizzas += $producto["precio_total"];
+                    }
+                }
+                fwrite($fichero_comanda, "----------------\n");
+                fwrite($fichero_comanda, "Total: ".$total_pizzas."€\n");
+                fclose($fichero_comanda);
+                unset($_SESSION["carrito"]);
+
+                // Borra el carrito tramitado y devuelve el nombre del ticket generado para la vista en la que se podrá descargar
+                unset($_SESSION["carrito"]);
+                return $ticket;
             }
         }
     
