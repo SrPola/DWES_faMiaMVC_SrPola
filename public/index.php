@@ -1,12 +1,19 @@
 <?php
     require_once "../vendor/autoload.php";
+
+    include_once '../app/Config/config.php';
+
+    include_once '../bootstrap.php';
     
     use App\Core\Router;
     use App\Controllers\IndexController;
     use App\Controllers\CarritoController;
-
+    use App\Controllers\AuthController;
+    
     session_start();
-
+    
+    define("productos", $productos);
+    
     if (!isset($_SESSION['perfil'])) {
         $_SESSION['perfil'] = "invitado";
     }
@@ -34,6 +41,33 @@
         "auth" => ["invitado", "usuario"]) 
     );
 
+    $router->add(array(
+        "name" => "Login",
+        "path" => "/^\/login$/",
+        "action" => [AuthController::class, "loginAction"],
+        "auth" => ["invitado", "usuario"]) 
+    );
+
+    $router->add(array(
+        "name" => "Cerrar sesion",
+        "path" => "/^\/close_session$/",
+        "action" => [IndexController::class, "closeSession"],
+        "auth" => ["invitado", "usuario"]) 
+    );
+
+    $router->add(array(
+        "name" => "Borrar carrito",
+        "path" => "/^\/clear_carrito$/",
+        "action" => [IndexController::class, "clearCarrito"],
+        "auth" => ["invitado", "usuario"]) 
+    );
+
+    $router->add(array(
+        "name" => "Gertor de comandas",
+        "path" => "/^\/comandas$/",
+        "action" => [CarritoController::class, "comandasAction"],
+        "auth" => ["usuario"]) 
+    );
 
     $request = $_SERVER['REQUEST_URI']; // Recoje URL
     $route = $router->match($request); // Busca en todas las rutas hasta encontrar cual coincide con la URL

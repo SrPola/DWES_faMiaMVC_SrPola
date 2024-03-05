@@ -4,53 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="SrPola">
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-            }
-
-            h1 {
-                margin: 20px 0;
-            }
-
-            nav ul li {
-                display: inline-block;
-                margin: 0 10px;
-            }
-
-            nav ul li a {
-                text-decoration: none;
-                display: block;
-                color: black;
-            }
-
-            img {
-                width: 100px;
-                display: block;
-            }
-
-            input {
-                width: 70px;
-            }
-
-            div {
-                display: inline-block;
-                margin: 20px;
-            }
-
-            .submit {
-                display: block;
-                width: auto;
-                border: 1px solid black;
-                padding: 5px;
-                background-color: rgba(127, 255, 212, 0.61);
-            }
-
-            select {
-                display: block;
-            }
-        </style>
+        <link rel="stylesheet" href="css/style.css">
         <title>faMia</title>
     </head>
     <body>
@@ -70,14 +24,16 @@
         </nav>
         <main>
             <h3>Seleccione productos</h3>
-            <form action="http://famiamvc.local/carrito/agregar" method="post">
+            <form action="carrito/agregar" method="post">
+                <div class="productos">
                 <?php
                     foreach ($data["productos"] as $producto) {
+                        echo "<input type='hidden' name='tipo_".str_replace(" ", "_", $producto["nombre"])."' value='".$data['tipo_producto']."'>";
                         echo "<div>";
                         echo "<img src='imagen/".$producto["imagen"]."' alt='".$producto["nombre"]."'>";
                         echo "<p>".$producto["nombre"]."</p>"; 
                 ?>
-                        Cantidad: <input type="number" name="<?php echo "cantidad_".str_replace(" ", "_", $producto["nombre"]); ?>" value="0">
+                        Cantidad: <input type="number" name="<?php echo "cantidad_".str_replace(" ", "_", $producto["nombre"]); ?>" min="0" value="0">
                 <?php
                         if ($data["sizes"]) {
                             echo "<select name='size_".str_replace(" ", "_", $producto["nombre"])."'>";
@@ -85,10 +41,14 @@
                                 echo "<option value='".$producto["precio"][$tamaño]."'>".$tamaño." - ".$precio."€</option>";
                             }
                             echo "</select>";
+                        } else {
+                            echo "<p>".$producto["precio"]."€ por unidad</p>";
+                            echo "<input type='hidden' name='size_".str_replace(" ", "_", $producto["nombre"])."' value='".$producto["precio"]."'>";
                         }
                         echo "</div>";
                     }
                 ?>
+                </div>
                 <input type="submit" class="submit" name="submit" value="Añadir al carrito">
             </form>
         </main>

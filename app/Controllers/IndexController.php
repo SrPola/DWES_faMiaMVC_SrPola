@@ -1,9 +1,6 @@
 <?php
     namespace App\Controllers;
 
-    include_once '../app/Config/config.php';
-    define("productos", $productos);
-
     class IndexController extends BaseController {
         public function indexAction($request){ // De momento no existe IndexController
             $sizes = false;
@@ -21,6 +18,7 @@
             $data = [
                 "productos" => productos[$tipo_producto],
                 "sizes" => $sizes,
+                "tipo_producto" => $tipo_producto,
             ];
             $this->renderHTML("../app/Views/index_view.php", $data); // La ruta parte de la ubicacion del fichero index.php
         }
@@ -34,5 +32,15 @@
             } else {
                 exit(http_response_code(404));
             }
+        }
+
+        public function closeSession() {
+            unset($_SESSION["perfil"]);
+            header("Location: login");
+        }
+
+        public function clearCarrito() {
+            unset($_SESSION["carrito"]);
+            header("Location: carrito");
         }
     }
