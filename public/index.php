@@ -9,6 +9,7 @@
     use App\Controllers\IndexController;
     use App\Controllers\CarritoController;
     use App\Controllers\AuthController;
+    use App\Controllers\ComandasController;
     
     session_start();
     
@@ -63,9 +64,16 @@
     );
 
     $router->add(array(
+        "name" => "Tramitar pedido",
+        "path" => "/^\/tramitar_pedido$/",
+        "action" => [CarritoController::class, "tramitarPedidoAction"],
+        "auth" => ["usuario", "usuario"]) 
+    );
+
+    $router->add(array(
         "name" => "Gertor de comandas",
         "path" => "/^\/comandas$/",
-        "action" => [CarritoController::class, "comandasAction"],
+        "action" => [ComandasController::class, "comandasAction"],
         "auth" => ["usuario"]) 
     );
 

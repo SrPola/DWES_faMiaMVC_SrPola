@@ -39,7 +39,10 @@
                     }
                     echo "<tr><td colspan='3'>Total</td><td>".$data["carrito"]["total_carrito"]."€</td></tr>";
                     echo "</table>";
+                    echo "<div class='botones'>";
                     echo "<a href='clear_carrito' class='submit'>Borrar Carrito</a>";
+                    echo "<a href='tramitar_pedido' class='submit'>Tramitar pedido</a>";
+                    echo "</div>";
                 } else {
                     echo "<p>El carrito está vacío</p>";
                 }

@@ -22,11 +22,10 @@
             }
         }
 
-        public function comandasAction() {
-            $data = [
-                "perfil" => $_SESSION['perfil']
-            ];
-            $this->renderHTML("../app/Views/comandas_view.php", $data);
+        public function tramitarPedidoAction() {
+            $carrito = Carrito::getInstancia();
+            $carrito->tramitarPedido();
+            header("Location: /");
         }
     }
     

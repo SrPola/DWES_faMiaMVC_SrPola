@@ -47,4 +47,12 @@
             }
             $_SESSION["carrito"]["total_carrito"] = $total_carrito;
         }
+
+        public function tramitarPedido() {
+            // Si el carrito no está vacío, guarda el carrito en la base de datos
+            if (isset($_SESSION["carrito"]) && !empty($_SESSION["carrito"])) {
+
+            }
+        }
+    
     }

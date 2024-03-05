@@ -35,7 +35,8 @@
         }
 
         public function closeSession() {
-            unset($_SESSION["perfil"]);
+            session_destroy();
+            // unset($_SESSION["perfil"]);
             header("Location: login");
         }
 
