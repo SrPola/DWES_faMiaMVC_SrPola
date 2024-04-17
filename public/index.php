@@ -86,7 +86,7 @@
 
     $router->add(array(
         "name" => "Realizar comandas",
-        "path" => "/^\/realizar_comanda\/(.+)_pendiente.txt$/",
+        "path" => "/^\/realizar_comanda\/comanda_([0-9]+)_pendiente.txt$/",
         "action" => [ComandasController::class, "realizarAction"],
         "auth" => ["usuario"]) 
     );
@@ -104,5 +104,5 @@
             header("Location: /login");
         }
     } else {
-        exit(http_response_code(404));
+        exit("norute    ");
     }
